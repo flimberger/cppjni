@@ -56,11 +56,17 @@ private:
     char data_[Length + 1] = {}; 
 };
 
+/**
+ * Returns a new static_string instance.
+ */
 template<std::size_t L>
-constexpr static_string<L - 1> static_str(const char (&s)[L]) {
+constexpr static_string<L - 1> static_strdup(const char (&s)[L]) {
     return static_string<L - 1>{s};
 }
 
+/**
+ * Returns a new static_string instance with the contents of its arguments.
+ */
 template<std::size_t L1, std::size_t L2>
 constexpr static_string<L1 + L2> static_strcat(const static_string<L1> &s1,
                                                const static_string<L2> &s2) {

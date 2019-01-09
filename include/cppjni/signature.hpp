@@ -12,37 +12,37 @@ struct signature;
 
 template<>
 struct signature<jboolean> {
-    constexpr static const auto value = detail::static_str("Z");
+    constexpr static const auto value = detail::static_strdup("Z");
 };
 
 template<>
 struct signature<jbyte> {
-    constexpr static const auto value = detail::static_str("B");
+    constexpr static const auto value = detail::static_strdup("B");
 };
 
 template<>
 struct signature<jshort> {
-    constexpr static const auto value = detail::static_str("S");
+    constexpr static const auto value = detail::static_strdup("S");
 };
 
 template<>
 struct signature<jint> {
-    constexpr static const auto value = detail::static_str("I");
+    constexpr static const auto value = detail::static_strdup("I");
 };
 
 template<>
 struct signature<jlong> {
-    constexpr static const auto value = detail::static_str("J");
+    constexpr static const auto value = detail::static_strdup("J");
 };
 
 template<>
 struct signature<jfloat> {
-    constexpr static const auto value = detail::static_str("F");
+    constexpr static const auto value = detail::static_strdup("F");
 };
 
 template<>
 struct signature<jdouble> {
-    constexpr static const auto value = detail::static_str("D");
+    constexpr static const auto value = detail::static_strdup("D");
 };
 
 template<typename T>
@@ -53,7 +53,7 @@ struct java_array {};
 template<typename T>
 struct signature<java_array<T>> {
     constexpr static const auto value =
-      detail::static_strcat(detail::static_str("["), signature<T>::value);
+      detail::static_strcat(detail::static_strdup("["), signature<T>::value);
 };
 
 // tag uses the following structure
@@ -71,9 +71,9 @@ struct java_class {
 template<typename Tag>
 struct signature<java_class<Tag>> {
     constexpr static const auto value =
-      detail::static_strcat(detail::static_str("L"),
+      detail::static_strcat(detail::static_strdup("L"),
                             detail::static_strcat(Tag::class_name,
-                                                  detail::static_str(";")));
+                                                  detail::static_strdup(";")));
 };
 
 namespace detail {
@@ -97,11 +97,11 @@ template<typename R, typename... Args>
 struct signature<R(Args...)> {
     constexpr static const auto value = 
       detail::static_strcat(
-        detail::static_str("("),
+        detail::static_strdup("("),
         detail::static_strcat(
           detail::signature_list<Args...>::value,
           detail::static_strcat(
-            detail::static_str(")"),
+            detail::static_strdup(")"),
             signature<R>::value
           )
         )
