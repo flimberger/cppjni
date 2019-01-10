@@ -32,7 +32,7 @@ TEST_CASE("Automatic signature creation for arrays", "[signatures][arrays]") {
 }
 
 struct string_class_tag {
-    constexpr static const auto class_name = detail::static_strdup("java/lang/String");
+    constexpr static const char class_name[] = "java/lang/String";
 };
 using string_class = java_class<string_class_tag>;
 

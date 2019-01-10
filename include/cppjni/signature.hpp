@@ -58,8 +58,7 @@ struct signature<java_array<T>> {
 
 // tag uses the following structure
 // struct string_class_tag {
-//     constexpr static const auto class_name
-//       = detail::static_str("java/lang/String");
+//     constexpr static const char class_name[] = "java/lang/String";
 // };
 template<typename Tag>
 struct java_class {
@@ -72,8 +71,9 @@ template<typename Tag>
 struct signature<java_class<Tag>> {
     constexpr static const auto value =
       detail::static_strcat(detail::static_strdup("L"),
-                            detail::static_strcat(Tag::class_name,
-                                                  detail::static_strdup(";")));
+                            detail::static_strcat(
+                              detail::static_strdup(Tag::class_name),
+                              detail::static_strdup(";")));
 };
 
 namespace detail {
