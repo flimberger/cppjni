@@ -51,16 +51,14 @@ TEST_CASE("Automatic signature creation for class names", "[signatures][classes]
     REQUIRE(signature<string_class>::value == "Ljava/lang/String;");
 }
 
-/*
 TEST_CASE("Automatic signature creation for object arrays", "[signatures][arrays][classes]") {
     REQUIRE(signature<java_array<string_class>>::value == "[Ljava/lang/String;");
 }
-*/
 
 TEST_CASE("Automatic signature creation for methods", "[signatures][methods]") {
   REQUIRE(signature<::jint(::jlong, ::jfloat)>::value.data() == std::string_view{"(JF)I"});
   REQUIRE(signature<::jint(::jlongArray)>::value.data() == std::string_view{"([J)I"});
   REQUIRE(signature<string_class(string_class, string_class)>::value.data() == std::string_view{"(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;"});
-  // REQUIRE(signature<::jint(java_array<string_class>)>::value.data() == std::string_view{"([Ljava/lang/String;)I"});
+  REQUIRE(signature<::jint(java_array<string_class>)>::value.data() == std::string_view{"([Ljava/lang/String;)I"});
   REQUIRE(signature<void(::jint)>::value.data() == std::string_view{"(I)V"});
 }

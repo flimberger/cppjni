@@ -75,70 +75,60 @@ struct signature<java_class<Tag>> {
                               detail::static_strdup(";")));
 };
 
-namespace detail {
-
 template<typename T>
 struct java_array {};
-
-}  // namespace detail
 
 /** Signature for arrays
  */
 template<typename T>
-struct signature<detail::java_array<T>> {
+struct signature<java_array<T>> {
     constexpr static const auto value =
       detail::static_strcat(detail::static_strdup("["), signature<T>::value);
 };
 
+// Signatures for the primitive array types.
+// ::jobjectArray is not supported here, as it is not type-safe;
+// it has to use signature<java_array<java_class<Tag>>>.
+
 template<>
 struct signature<jbooleanArray> {
-    constexpr static const auto value = signature<detail::java_array<jboolean>>::value;
+    constexpr static const auto value = signature<java_array<jboolean>>::value;
 };
 
 template<>
 struct signature<jbyteArray> {
-    constexpr static const auto value = signature<detail::java_array<jbyte>>::value;
+    constexpr static const auto value = signature<java_array<jbyte>>::value;
 };
 
 template<>
 struct signature<jcharArray> {
-    constexpr static const auto value = signature<detail::java_array<jchar>>::value;
+    constexpr static const auto value = signature<java_array<jchar>>::value;
 };
 
 template<>
 struct signature<jshortArray> {
-    constexpr static const auto value = signature<detail::java_array<jshort>>::value;
+    constexpr static const auto value = signature<java_array<jshort>>::value;
 };
 
 template<>
 struct signature<jintArray> {
-    constexpr static const auto value = signature<detail::java_array<jint>>::value;
+    constexpr static const auto value = signature<java_array<jint>>::value;
 };
 
 template<>
 struct signature<jlongArray> {
-    constexpr static const auto value = signature<detail::java_array<jlong>>::value;
+    constexpr static const auto value = signature<java_array<jlong>>::value;
 };
 
 template<>
 struct signature<jfloatArray> {
-    constexpr static const auto value = signature<detail::java_array<jfloat>>::value;
+    constexpr static const auto value = signature<java_array<jfloat>>::value;
 };
 
 template<>
 struct signature<jdoubleArray> {
-    constexpr static const auto value = signature<detail::java_array<jdouble>>::value;
+    constexpr static const auto value = signature<java_array<jdouble>>::value;
 };
-
-/*
-
-This needs a new kind of abstraction for arrays.
-
-template<>
-struct signature<jobjectArray> {
-    constexpr static const auto value = signature<detail::java_array<jobject>>::value;
-};
-*/
 
 namespace detail {
 
@@ -159,7 +149,7 @@ struct signature_list<A> {
  */
 template<typename R, typename... Args>
 struct signature<R(Args...)> {
-    constexpr static const auto value = 
+    constexpr static const auto value =
       detail::static_strcat(
         detail::static_strdup("("),
         detail::static_strcat(
